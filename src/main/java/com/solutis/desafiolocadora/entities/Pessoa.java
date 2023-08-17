@@ -28,11 +28,11 @@ public abstract class Pessoa implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-    @NotBlank
+    @NotBlank(message = "Nome não pode ser vazio")
     private String nome;
     
-    @NotNull
-    @PastOrPresent
+    @NotNull(message = "Data de nascimento não pode ser nula")
+    @PastOrPresent(message = "Data de nascimento não pode ser futura")
     private LocalDate dataNascimento;
     
     @NotBlank

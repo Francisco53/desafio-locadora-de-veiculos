@@ -5,15 +5,17 @@ import java.time.LocalDate;
 import com.solutis.desafiolocadora.enumeration.Sexo;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 @Entity
+@Table(name = "tb_funcionario")
 public class Funcionario extends Pessoa {
 
 	private static final long serialVersionUID = 1L;
 
-	@NotBlank
+	@NotBlank(message = "Matrícula não pode ser vazia")
 	@Pattern(regexp = "\\d{4,6}")
 	private String matricula;
 
