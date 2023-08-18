@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,6 +38,7 @@ public class ApoliceSeguro implements Serializable {
 	@NotNull(message = "A proteção contra roubo não pode ser nula")
 	private boolean ProtecaoRoubo;
 	
+	@JsonIgnore
 	@OneToOne(mappedBy = "apolice")
 	private Aluguel aluguel;
 	

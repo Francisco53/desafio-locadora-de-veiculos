@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Profile;
 import com.solutis.desafiolocadora.entities.Acessorio;
 import com.solutis.desafiolocadora.entities.Aluguel;
 import com.solutis.desafiolocadora.entities.ApoliceSeguro;
+import com.solutis.desafiolocadora.entities.Carro;
 import com.solutis.desafiolocadora.entities.Fabricante;
 import com.solutis.desafiolocadora.entities.Funcionario;
 import com.solutis.desafiolocadora.entities.ModeloCarro;
@@ -22,6 +23,7 @@ import com.solutis.desafiolocadora.enumeration.Sexo;
 import com.solutis.desafiolocadora.repository.AcessorioRepository;
 import com.solutis.desafiolocadora.repository.AluguelRepository;
 import com.solutis.desafiolocadora.repository.ApoliceSeguroRepository;
+import com.solutis.desafiolocadora.repository.CarroRepository;
 import com.solutis.desafiolocadora.repository.FabricanteRepository;
 import com.solutis.desafiolocadora.repository.FuncionarioRepository;
 import com.solutis.desafiolocadora.repository.ModeloCarroRepository;
@@ -45,6 +47,9 @@ public class TestConfig implements CommandLineRunner {
 	
 	@Autowired
 	private AcessorioRepository acessorioRepository;
+	
+	@Autowired
+	private CarroRepository carroRepository;
 	
 	@Autowired
 	private ApoliceSeguroRepository apoliceSeguroRepository;
@@ -80,13 +85,18 @@ public class TestConfig implements CommandLineRunner {
 
 		acessorioRepository.saveAll(Arrays.asList(acessorio1, acessorio2));
 		
+		Carro carro1 = new Carro(null, "ABC1234", "12345678901234567", "Azul", "https://example.com/car1.jpg", new BigDecimal("150.00"), modelo1);
+		Carro carro2 = new Carro(null, "XYZ5678", "98765432109876543", "Vermelho", "https://example.com/car2.jpg", new BigDecimal("200.00"), modelo2);
+
+		carroRepository.saveAll(Arrays.asList(carro1, carro2));
+		
 		ApoliceSeguro apolice1 = new ApoliceSeguro(null, new BigDecimal("1000.00"), true, true, true);
 		ApoliceSeguro apolice2 = new ApoliceSeguro(null, new BigDecimal("1500.00"), false, true, false);
 		
 		apoliceSeguroRepository.saveAll(Arrays.asList(apolice1, apolice2));
 		
-		Aluguel aluguel1 = new Aluguel(null, Calendar.getInstance(), LocalDate.of(2023, 9, 10), LocalDate.of(2023, 9, 15), new BigDecimal("750.00"), apolice1, motorista1);
-		Aluguel aluguel2 = new Aluguel(null, Calendar.getInstance(), LocalDate.of(2023, 8, 23), LocalDate.of(2023, 8, 23), new BigDecimal("150.00"), apolice2, motorista2);
+		Aluguel aluguel1 = new Aluguel(null, Calendar.getInstance(), LocalDate.of(2023, 9, 10), LocalDate.of(2023, 9, 15), apolice1, motorista1, carro1);
+		Aluguel aluguel2 = new Aluguel(null, Calendar.getInstance(), LocalDate.of(2023, 8, 23), LocalDate.of(2023, 8, 23), apolice2, motorista2, carro2);
 		
 		aluguelRepository.saveAll(Arrays.asList(aluguel1, aluguel2));
 	}

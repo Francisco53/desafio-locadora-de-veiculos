@@ -56,11 +56,12 @@ public class Carro implements Serializable {
 	public Carro() {
 	}
 
-	public Carro(Long id, String placa, String chassi, String cor, BigDecimal valorDiaria, ModeloCarro modelo) {
+	public Carro(Long id, String placa, String chassi, String cor, String imgUrl, BigDecimal valorDiaria, ModeloCarro modelo) {
 		this.id = id;
 		this.placa = placa;
 		this.chassi = chassi;
 		this.cor = cor;
+		this.imgUrl = imgUrl;
 		this.valorDiaria = valorDiaria;
 		this.modelo = modelo;
 	}

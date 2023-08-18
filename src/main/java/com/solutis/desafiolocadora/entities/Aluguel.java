@@ -3,6 +3,7 @@ package com.solutis.desafiolocadora.entities;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -33,7 +34,7 @@ public class Aluguel implements Serializable {
 
 	@NotNull(message = "Data de entrega não pode ser nula")
 	@Future(message = "Data de entrega deve estar no futuro")
-	private LocalDate dataEnterga;
+	private LocalDate dataEntrega;
 
 	@NotNull(message = "Data de devolução não pode ser nula")
 	@Future(message = "Data de devolução deve estar no futuro")
@@ -50,22 +51,27 @@ public class Aluguel implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "motorista_id")
 	private Motorista motorista;
+	
+	@ManyToOne
+	@JoinColumn(name = "carro_id")
+	private Carro carro;
 
 	public Aluguel() {
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public Aluguel(Long id, Calendar dataPedido, LocalDate dataEnterga, LocalDate dataDevolucao, BigDecimal valorTotal, ApoliceSeguro apolice, Motorista motorista) {
+	public Aluguel(Long id, Calendar dataPedido, LocalDate dataEntrega, LocalDate dataDevolucao, ApoliceSeguro apolice, Motorista motorista, Carro carro) {
 		this.id = id;
 		this.dataPedido = dataPedido;
-		this.dataEnterga = dataEnterga;
+		this.dataEntrega = dataEntrega;
 		this.dataDevolucao = dataDevolucao;
-		this.valorTotal = valorTotal;
 		this.apolice = apolice;
 		this.motorista = motorista;
+		this.carro = carro;
+		calcularValorTotal();
+	}
+	
+	public Long getId() {
+		return id;
 	}
 
 	public void setId(Long id) {
@@ -80,12 +86,12 @@ public class Aluguel implements Serializable {
 		this.dataPedido = dataPedido;
 	}
 
-	public LocalDate getDataEnterga() {
-		return dataEnterga;
+	public LocalDate getDataEntrega() {
+		return dataEntrega;
 	}
 
-	public void setDataEnterga(LocalDate dataEnterga) {
-		this.dataEnterga = dataEnterga;
+	public void setDataEntrega(LocalDate dataEntrega) {
+		this.dataEntrega = dataEntrega;
 	}
 
 	public LocalDate getDataDevolucao() {
@@ -100,15 +106,23 @@ public class Aluguel implements Serializable {
 		return valorTotal;
 	}
 
-	public void setValorTotal(BigDecimal valorTotal) {
-		this.valorTotal = valorTotal;
-	}
+	public void calcularValorTotal() {
+        BigDecimal valorDiaria = carro.getValorDiaria();
+        BigDecimal valorApolice = apolice.getValorFranquia();
 
-	public ApoliceSeguro getApoliceSeguro() {
+        long quantidadeDeDias = ChronoUnit.DAYS.between(dataEntrega, dataDevolucao);
+
+        BigDecimal valorTotalDiarias = valorDiaria.multiply(BigDecimal.valueOf(quantidadeDeDias));
+        BigDecimal valorTotal = valorTotalDiarias.add(valorApolice);
+
+        this.valorTotal = valorTotal;
+    }
+
+	public ApoliceSeguro getApolice() {
 		return apolice;
 	}
 
-	public void setApoliceSeguro(ApoliceSeguro apolice) {
+	public void setApolice(ApoliceSeguro apolice) {
 		this.apolice = apolice;
 	}
 
@@ -118,6 +132,14 @@ public class Aluguel implements Serializable {
 
 	public void setMotorista(Motorista motorista) {
 		this.motorista = motorista;
+	}
+	
+	public Carro getCarro() {
+		return carro;
+	}
+
+	public void setCarro(Carro carro) {
+		this.carro = carro;
 	}
 
 	@Override
