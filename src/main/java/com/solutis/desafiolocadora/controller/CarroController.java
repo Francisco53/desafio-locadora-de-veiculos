@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.solutis.desafiolocadora.entities.Acessorio;
+import com.solutis.desafiolocadora.enumeration.Categoria;
 import com.solutis.desafiolocadora.repository.AcessorioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +53,21 @@ public class CarroController {
 					.collect(Collectors.toList());
 		} else {
 			return Collections.emptyList();
+		}
+	}
+
+	@GetMapping("/buscar/categoria/{categoria}")
+	public ResponseEntity<List<Carro>> listarVeiculosPorCategoria(@PathVariable Categoria categoria) {
+		List<Carro> carros = service.findAll();
+
+		List<Carro> carrosPorCategoria = carros.stream()
+				.filter(carro -> carro.getModelo().getCategoria().equals(categoria))
+				.collect(Collectors.toList());
+
+		if (!carrosPorCategoria.isEmpty()) {
+			return ResponseEntity.ok(carrosPorCategoria);
+		} else {
+			return ResponseEntity.notFound().build();
 		}
 	}
 
