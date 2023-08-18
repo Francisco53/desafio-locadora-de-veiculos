@@ -3,6 +3,7 @@ package com.solutis.desafiolocadora.entities;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -65,6 +66,8 @@ public class Carro implements Serializable {
 		this.valorDiaria = valorDiaria;
 		this.modelo = modelo;
 	}
+
+
 
 	public Long getId() {
 		return id;
@@ -141,5 +144,10 @@ public class Carro implements Serializable {
 			return false;
 		Carro other = (Carro) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	public List<Acessorio> addAcessorio(Acessorio acessorio){
+		acessorios.add(acessorio);
+		return List.copyOf(acessorios);
 	}
 }

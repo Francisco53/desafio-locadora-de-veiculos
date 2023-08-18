@@ -88,6 +88,8 @@ public class TestConfig implements CommandLineRunner {
 		Carro carro1 = new Carro(null, "ABC1234", "12345678901234567", "Azul", "https://example.com/car1.jpg", new BigDecimal("150.00"), modelo1);
 		Carro carro2 = new Carro(null, "XYZ5678", "98765432109876543", "Vermelho", "https://example.com/car2.jpg", new BigDecimal("200.00"), modelo2);
 
+		carro1.getAcessorios().add(acessorio1);
+
 		carroRepository.saveAll(Arrays.asList(carro1, carro2));
 		
 		ApoliceSeguro apolice1 = new ApoliceSeguro(null, new BigDecimal("1000.00"), true, true, true);
