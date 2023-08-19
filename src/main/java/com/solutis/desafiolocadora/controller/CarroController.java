@@ -44,6 +44,7 @@ public class CarroController {
 	}
 
 	@GetMapping("/buscar/acessorios/{descricao}")
+	@Operation(summary = "Buscar carro através de seu acessório")
 	public List<Carro> listarVeiculosPorAcessorios(@PathVariable String descricao) {
 		Acessorio acessorio = acessorioRepository.findByDescricao(descricao); // Supondo que você tenha um método findByNome no seu AcessorioRepository
 		if (acessorio != null) {
@@ -57,6 +58,7 @@ public class CarroController {
 	}
 
 	@GetMapping("/buscar/categoria/{categoria}")
+	@Operation(summary = "Buscar carro através da categoria")
 	public ResponseEntity<List<Carro>> listarVeiculosPorCategoria(@PathVariable Categoria categoria) {
 		List<Carro> carros = service.findAll();
 
