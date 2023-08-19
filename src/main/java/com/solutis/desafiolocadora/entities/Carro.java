@@ -3,7 +3,6 @@ package com.solutis.desafiolocadora.entities;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -47,7 +46,7 @@ public class Carro implements Serializable {
 	private BigDecimal valorDiaria;
 	
 	@ManyToMany
-	@JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
+	@JoinTable(name = "tb_carro_acessorio", joinColumns = @JoinColumn(name = "carro_id"), inverseJoinColumns = @JoinColumn(name = "acessorio_id"))
 	private Set<Acessorio> acessorios = new HashSet<>();
 	
 	@ManyToOne
@@ -66,8 +65,6 @@ public class Carro implements Serializable {
 		this.valorDiaria = valorDiaria;
 		this.modelo = modelo;
 	}
-
-
 
 	public Long getId() {
 		return id;
@@ -120,6 +117,14 @@ public class Carro implements Serializable {
 	public Set<Acessorio> getAcessorios() {
 		return acessorios;
 	}
+	
+	public void addAcessorio(Acessorio acessorio) {
+	    if (acessorio != null) {
+	        getAcessorios().add(acessorio);
+	    } else {
+	        throw new IllegalArgumentException("O parâmetro 'acessorio' não pode ser nulo.");
+	    }
+	}
 
 	public ModeloCarro getModelo() {
 		return modelo;
@@ -144,10 +149,5 @@ public class Carro implements Serializable {
 			return false;
 		Carro other = (Carro) obj;
 		return Objects.equals(id, other.id);
-	}
-
-	public List<Acessorio> addAcessorio(Acessorio acessorio){
-		acessorios.add(acessorio);
-		return List.copyOf(acessorios);
 	}
 }

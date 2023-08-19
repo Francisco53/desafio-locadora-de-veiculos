@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.solutis.desafiolocadora.enumeration.Categoria;
+import com.solutis.desafiolocadora.entities.enumerations.Categoria;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;

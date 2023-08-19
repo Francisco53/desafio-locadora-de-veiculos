@@ -2,7 +2,7 @@ package com.solutis.desafiolocadora.entities;
 
 import java.time.LocalDate;
 
-import com.solutis.desafiolocadora.enumeration.Sexo;
+import com.solutis.desafiolocadora.entities.enumerations.Sexo;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

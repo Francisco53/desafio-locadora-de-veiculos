@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import org.hibernate.validator.constraints.br.CPF;
 
-import com.solutis.desafiolocadora.enumeration.Sexo;
+import com.solutis.desafiolocadora.entities.enumerations.Sexo;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
