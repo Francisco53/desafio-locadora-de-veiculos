@@ -3,6 +3,7 @@ package com.solutis.desafiolocadora.controllers;
 import java.net.URI;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.solutis.desafiolocadora.entities.Aluguel;
 import com.solutis.desafiolocadora.services.AluguelService;
+import com.solutis.desafiolocadora.services.CarrinhoDeComprasService;
+import com.solutis.desafiolocadora.util.ResponseMessage;
 
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -23,7 +26,11 @@ import io.swagger.v3.oas.annotations.Operation;
 @RequestMapping(value = "/alugueis")
 public class AluguelController {
 
+	@Autowired
 	private AluguelService service;
+
+	@Autowired
+	private CarrinhoDeComprasService carrinhoDeComprasService;
 
 	@GetMapping
 	@Operation(summary = "Buscar e listar informações de todos os aluguéis")
@@ -45,6 +52,13 @@ public class AluguelController {
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
+	}
+
+	@PostMapping("/efetivar")
+	@Operation(summary = "Efetivar a confirmação dos aluguéis no carrinho")
+	public ResponseEntity<ResponseMessage> efetivarAluguel() {
+		ResponseMessage responseMessage = carrinhoDeComprasService.confirmarAluguel();
+		return ResponseEntity.ok(responseMessage);
 	}
 
 	@DeleteMapping(value = "/{id}")

@@ -6,4 +6,5 @@ import com.solutis.desafiolocadora.entities.Motorista;
 
 public interface MotoristaRepository extends JpaRepository<Motorista, Long> {
 
+	boolean existsByEmail(String email);
 }

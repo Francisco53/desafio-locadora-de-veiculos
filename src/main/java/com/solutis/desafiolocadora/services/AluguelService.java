@@ -1,5 +1,6 @@
 package com.solutis.desafiolocadora.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.solutis.desafiolocadora.entities.Aluguel;
+import com.solutis.desafiolocadora.entities.Carro;
 import com.solutis.desafiolocadora.repositories.AluguelRepository;
 
 @Service
@@ -47,4 +49,8 @@ public class AluguelService {
 		entity.setDataDevolucao(obj.getDataDevolucao());
 		entity.calcularValorTotal();
 	}
+	
+	public Aluguel findByCarroAndDates(Carro carro, LocalDate dataEntrega, LocalDate dataDevolucao) {
+        return repository.findByCarroAndDataEntregaLessThanEqualAndDataDevolucaoGreaterThanEqual(carro, dataEntrega, dataDevolucao);
+    }
 }

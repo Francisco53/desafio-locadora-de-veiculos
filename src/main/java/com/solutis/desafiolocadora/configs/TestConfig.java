@@ -97,9 +97,9 @@ public class TestConfig implements CommandLineRunner {
 		
 		apoliceSeguroRepository.saveAll(Arrays.asList(apolice1, apolice2));
 		
-		Aluguel aluguel1 = new Aluguel(null, Calendar.getInstance(), LocalDate.of(2023, 9, 10), LocalDate.of(2023, 9, 15), apolice1, motorista1, carro1);
-		Aluguel aluguel2 = new Aluguel(null, Calendar.getInstance(), LocalDate.of(2023, 8, 23), LocalDate.of(2023, 8, 23), apolice2, motorista2, carro2);
-		
-		aluguelRepository.saveAll(Arrays.asList(aluguel1, aluguel2));
+//		Aluguel aluguel1 = new Aluguel(null, Calendar.getInstance(), LocalDate.of(2023, 9, 10), LocalDate.of(2023, 9, 15), apolice1, motorista1, carro1);
+//		Aluguel aluguel2 = new Aluguel(null, Calendar.getInstance(), LocalDate.of(2023, 8, 23), LocalDate.of(2023, 8, 23), apolice2, motorista2, carro2);
+//		
+//		aluguelRepository.saveAll(Arrays.asList(aluguel1, aluguel2));
 	}
 }

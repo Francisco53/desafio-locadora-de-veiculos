@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +15,7 @@ import com.solutis.desafiolocadora.entities.CarrinhoDeCompras;
 import com.solutis.desafiolocadora.services.CarrinhoDeComprasService;
 import com.solutis.desafiolocadora.util.ResponseMessage;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/carrinho")
@@ -30,11 +31,11 @@ public class CarrinhoDeComprasController {
     }
 
     @PostMapping("/adicionar")
-    public ResponseEntity<ResponseMessage> adicionarAoCarrinho(@RequestBody ItemCarrinhoDto itemDto) {
+    public ResponseEntity<ResponseMessage> adicionarAoCarrinho(@RequestBody @Valid ItemCarrinhoDto itemDto) {
         ResponseMessage responseMessage = carrinhoDeComprasService.adicionarItem(itemDto);
         return ResponseEntity.ok(responseMessage);
     }
-
+    
     @DeleteMapping("/remover")
     public ResponseEntity<ResponseMessage> removerDoCarrinho(@RequestParam int index) {
         ResponseMessage responseMessage = carrinhoDeComprasService.removerItem(index);
@@ -53,4 +54,3 @@ public class CarrinhoDeComprasController {
         return ResponseEntity.ok(responseMessage);
     }
 }
-

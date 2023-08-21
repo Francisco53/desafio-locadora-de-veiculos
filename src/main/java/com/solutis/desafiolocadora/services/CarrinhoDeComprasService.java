@@ -1,6 +1,7 @@
 package com.solutis.desafiolocadora.services;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
 
@@ -38,6 +39,31 @@ public class CarrinhoDeComprasService {
 	}
 
 	public ResponseMessage adicionarItem(ItemCarrinhoDto itemDto) {
+		Carro carro = carroService.findById(itemDto.getCarroId());
+		if (carro == null) {
+			return new ResponseMessage("Carro não encontrado.");
+		}
+
+		ItemCarrinho itemExistente = carrinhoDeCompras.getItemByCarroId(carro.getId());
+		if (itemExistente != null) {
+			if (!isCarroDisponivel(carro, itemDto.getDataEntrega(), itemDto.getDataDevolucao())) {
+				return new ResponseMessage("Carro não está disponível nesse período.");
+			}
+
+			itemExistente.setDataEntrega(itemDto.getDataEntrega());
+			itemExistente.setDataDevolucao(itemDto.getDataDevolucao());
+			itemExistente.setApolice(apoliceService.findById(itemDto.getApoliceId()));
+			itemExistente.calcularSubtotal();
+
+			carrinhoDeCompras.atualizarItem(carrinhoDeCompras.getItens().indexOf(itemExistente), itemExistente);
+
+			return new ResponseMessage("Item atualizado no carrinho com sucesso.");
+		}
+
+		if (!isCarroDisponivel(carro, itemDto.getDataEntrega(), itemDto.getDataDevolucao())) {
+			return new ResponseMessage("Carro não está disponível nesse período.");
+		}
+
 		ItemCarrinho item = criarItemAPartirDoDto(itemDto);
 		carrinhoDeCompras.adicionarItem(item);
 		return new ResponseMessage("Item adicionado ao carrinho com sucesso.");
@@ -54,7 +80,7 @@ public class CarrinhoDeComprasService {
 	}
 
 	public ResponseMessage calcularTotal() {
-		BigDecimal total = carrinhoDeCompras.calcularTotal();
+		BigDecimal total = carrinhoDeCompras.getValorTotal();
 		return new ResponseMessage("Total do carrinho: " + total.toString());
 	}
 
@@ -75,7 +101,7 @@ public class CarrinhoDeComprasService {
 		Motorista motorista = motoristaService.findById(itemDto.getMotoristaId());
 		ApoliceSeguro apolice = apoliceService.findById(itemDto.getApoliceId());
 
-		return new ItemCarrinho(carro, motorista, apolice, itemDto.getDataDevolucao(), itemDto.getDataEntrega());
+		return new ItemCarrinho(carro, motorista, apolice, itemDto.getDataEntrega(), itemDto.getDataDevolucao());
 	}
 
 	private void salvarAlugueisDosItensNoCarrinho() {
@@ -87,7 +113,11 @@ public class CarrinhoDeComprasService {
 	}
 
 	private Aluguel criarAluguelAPartirDoItem(ItemCarrinho item) {
-		return new Aluguel(null, Calendar.getInstance(), item.getDataEntrega(), item.getDataDevolucao(),
-				item.getApolice(), item.getMotorista(), item.getCarro());
+		return new Aluguel(null, Calendar.getInstance(), item.getDataEntrega(), item.getDataDevolucao(), item.getApolice(), item.getMotorista(), item.getCarro());
+	}
+
+	private boolean isCarroDisponivel(Carro carro, LocalDate dataEntrega, LocalDate dataDevolucao) {
+		Aluguel aluguelConflitante = aluguelService.findByCarroAndDates(carro, dataEntrega, dataDevolucao);
+		return aluguelConflitante == null;
 	}
 }

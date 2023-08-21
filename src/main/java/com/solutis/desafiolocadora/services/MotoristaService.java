@@ -23,25 +23,29 @@ public class MotoristaService {
 		Optional<Motorista> obj = repository.findById(id);
 		return obj.get();
 	}
-	
+
 	public Motorista insert(Motorista obj) {
 		return repository.save(obj);
 	}
-	
+
 	public void delete(Long id) {
 		repository.deleteById(id);
 	}
-	
+
 	public Motorista update(Long id, Motorista obj) {
 		Motorista entity = repository.getReferenceById(id);
 		updateData(entity, obj);
 		return repository.save(entity);
 	}
-	
+
 	public void updateData(Motorista entity, Motorista obj) {
 		entity.setNome(obj.getNome());
 		entity.setDataNascimento(obj.getDataNascimento());
 		entity.setCpf(obj.getCpf());
 		entity.setNumeroCNH(obj.getNumeroCNH());
+	}
+
+	public boolean isEmailAlreadyTaken(String email) {
+		return repository.existsByEmail(email);
 	}
 }
