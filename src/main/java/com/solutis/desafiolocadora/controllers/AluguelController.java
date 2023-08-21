@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.solutis.desafiolocadora.dto.ConfirmacaoAluguelDto;
 import com.solutis.desafiolocadora.entities.Aluguel;
 import com.solutis.desafiolocadora.services.AluguelService;
 import com.solutis.desafiolocadora.services.CarrinhoDeComprasService;
@@ -56,8 +57,8 @@ public class AluguelController {
 
 	@PostMapping("/efetivar")
 	@Operation(summary = "Efetivar a confirmação dos aluguéis no carrinho")
-	public ResponseEntity<ResponseMessage> efetivarAluguel() {
-		ResponseMessage responseMessage = carrinhoDeComprasService.confirmarAluguel();
+	public ResponseEntity<ResponseMessage> efetivarAluguel(@RequestBody ConfirmacaoAluguelDto confirmacaoDto) {
+		ResponseMessage responseMessage = carrinhoDeComprasService.confirmarAluguel(confirmacaoDto);
 		return ResponseEntity.ok(responseMessage);
 	}
 

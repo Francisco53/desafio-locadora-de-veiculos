@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.solutis.desafiolocadora.dto.ConfirmacaoAluguelDto;
 import com.solutis.desafiolocadora.dto.ItemCarrinhoDto;
 import com.solutis.desafiolocadora.entities.Aluguel;
 import com.solutis.desafiolocadora.entities.ApoliceSeguro;
@@ -84,7 +85,11 @@ public class CarrinhoDeComprasService {
 		return new ResponseMessage("Total do carrinho: " + total.toString());
 	}
 
-	public ResponseMessage confirmarAluguel() {
+	public ResponseMessage confirmarAluguel(ConfirmacaoAluguelDto confirmacaoDto) {
+		if (!confirmacaoDto.isConcordouTermos()) {
+			return new ResponseMessage("Você deve concordar com os termos para confirmar o aluguel.");
+		}
+
 		if (carrinhoDeCompras.getItens().isEmpty()) {
 			return new ResponseMessage("Carrinho de compras vazio. Não é possível confirmar o aluguel.");
 		}
@@ -93,7 +98,7 @@ public class CarrinhoDeComprasService {
 
 		carrinhoDeCompras.limparCarrinho();
 
-		return new ResponseMessage("Aluguel confirmado com sucesso.");
+		return new ResponseMessage("Aluguel confirmado com sucesso. Detalhes de pagamento: " + confirmacaoDto.getMetodoPagamento());
 	}
 
 	private ItemCarrinho criarItemAPartirDoDto(ItemCarrinhoDto itemDto) {

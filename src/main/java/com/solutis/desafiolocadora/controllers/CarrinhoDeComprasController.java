@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.solutis.desafiolocadora.dto.ConfirmacaoAluguelDto;
 import com.solutis.desafiolocadora.dto.ItemCarrinhoDto;
 import com.solutis.desafiolocadora.entities.CarrinhoDeCompras;
 import com.solutis.desafiolocadora.services.CarrinhoDeComprasService;
@@ -28,6 +29,12 @@ public class CarrinhoDeComprasController {
     public ResponseEntity<CarrinhoDeCompras> exibirCarrinho() {
         CarrinhoDeCompras carrinho = carrinhoDeComprasService.getCarrinho();
         return ResponseEntity.ok(carrinho);
+    }
+    
+    @PostMapping("/confirmar-aluguel")
+    public ResponseEntity<ResponseMessage> confirmarAluguel(@RequestBody ConfirmacaoAluguelDto confirmacaoDto) {
+        ResponseMessage responseMessage = carrinhoDeComprasService.confirmarAluguel(confirmacaoDto);
+        return ResponseEntity.ok(responseMessage);
     }
 
     @PostMapping("/adicionar")
