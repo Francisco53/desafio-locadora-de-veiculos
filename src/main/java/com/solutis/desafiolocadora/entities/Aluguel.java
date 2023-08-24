@@ -15,7 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
@@ -33,11 +33,11 @@ public class Aluguel implements Serializable {
 	private Calendar dataPedido;
 
 	@NotNull(message = "Data de entrega não pode ser nula")
-	@Future(message = "Data de entrega deve estar no futuro")
+	@FutureOrPresent(message = "Data de entrega deve estar no futuro")
 	private LocalDate dataEntrega;
 
 	@NotNull(message = "Data de devolução não pode ser nula")
-	@Future(message = "Data de devolução deve estar no futuro")
+	@FutureOrPresent(message = "Data de devolução deve estar no futuro")
 	private LocalDate dataDevolucao;
 
 	@NotNull(message = "Valor total não pode ser nulo")
